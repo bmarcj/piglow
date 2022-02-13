@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 /**
- * The {@link PiGlow} class depends upon the pi4j library, particulary the {@link I2C} circuit board
+ * The {@link PiGlow} class depends upon the pi4j library - mainly the {@link I2C} circuit board
  * interface abstraction.
  */
 public final class PiGlow implements AutoCloseable {
@@ -64,18 +64,6 @@ public final class PiGlow implements AutoCloseable {
     synchronized public void off(Collection<PiGlowLED> leds, int intensity) {
         validate(intensity);
         leds.forEach(led -> i2C.register(led.getAddress()).write(intensity));
-        commit();
-    }
-
-    synchronized public void on(PiGlowArm piGlowArm, int intensity) {
-        validate(intensity);
-        on(piGlowArm.getLeds(), intensity);
-        commit();
-    }
-
-    synchronized public void off(PiGlowArm piGlowArm, int intensity) {
-        validate(intensity);
-        off(piGlowArm.getLeds(), intensity);
         commit();
     }
 

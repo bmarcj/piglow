@@ -49,26 +49,32 @@ public final class PiGlow implements AutoCloseable {
         i2C.register(COMMIT_ADDR).write(COMMIT_CMD);
     }
 
+    private void validate(int intensity){
+        if (intensity < 0 || intensity > 255){
+            throw new IllegalArgumentException("Intensity must be between 0 and 255; value is " + intensity);
+        }
+    }
+
     synchronized public void on(Collection<PiGlowLED> leds, int intensity) {
-        //todo check intensity
+        validate(intensity);
         leds.forEach(led -> i2C.register(led.getAddress()).write(intensity));
         commit();
     }
 
     synchronized public void off(Collection<PiGlowLED> leds, int intensity) {
-        //todo check intensity
+        validate(intensity);
         leds.forEach(led -> i2C.register(led.getAddress()).write(intensity));
         commit();
     }
 
     synchronized public void on(PiGlowArm piGlowArm, int intensity) {
-        //todo check intensity
+        validate(intensity);
         on(piGlowArm.getLeds(), intensity);
         commit();
     }
 
     synchronized public void off(PiGlowArm piGlowArm, int intensity) {
-        //todo check intensity
+        validate(intensity);
         off(piGlowArm.getLeds(), intensity);
         commit();
     }
